@@ -1,20 +1,17 @@
-version: '2'
+version: '3'
 services:
   website:
     image: nginx
     restart: always
-    networks:
-      - web
-    ports:
-      - '8080:80'
+    container_name: 'website'
+    hostname: 'website'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./static:/usr/share/nginx/html
     labels:
       - 'traefik.enable=true'
-      - 'traefik.frontend.rule=Host:${APP_URL}'
-      - 'traefik.docker.network=web'
-
+      - 'traefik.http.routers.guillaumecatel.rule=Host(`my-website.local`)'
 networks:
-  web:
-    external: true
+  default:
+    external:
+      name: $TRAEFIK_NETWORK
