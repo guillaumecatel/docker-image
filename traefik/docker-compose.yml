@@ -18,8 +18,15 @@ services:
       - './users_credentials:/users_credentials:ro'
       - './acme.json:/acme.json'
     labels:
-      - 'traefik.enable=true'
+      - "traefik.enable=true"
       - 'traefik.http.routers.dashboard.rule=Host(`traefik.my-website.local`)'
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=lets-encr"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.redirect-https.entrypoints=web"
+      - "traefik.http.routers.redirect-https.middlewares=redirect-to-https"
       - 'traefik.http.middlewares.auth-middleware.basicauth.usersfile=/users_credentials'
 networks:
   default:

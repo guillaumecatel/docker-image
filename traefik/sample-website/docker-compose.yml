@@ -11,6 +11,8 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.guillaumecatel.rule=Host(`my-website.local`)'
+      - "traefik.http.routers.guillaumecatel.entrypoints=websecure"
+      - "traefik.http.routers.guillaumecatel.tls.certresolver=lets-encr"
 networks:
   default:
     external:
