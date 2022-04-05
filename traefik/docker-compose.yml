@@ -27,6 +27,7 @@ services:
       - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.redirect-https.entrypoints=web"
       - "traefik.http.routers.redirect-https.middlewares=redirect-to-https"
+      - "traefik.http.routers.dashboard.middlewares=auth-middleware"
       - 'traefik.http.middlewares.auth-middleware.basicauth.usersfile=/users_credentials'
 networks:
   default:
