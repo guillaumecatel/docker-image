@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  traefik:
+    image: 'traefik:1.7.12-alpine'
+    container_name: ${APP_NAME}
+    restart: always
+    networks:
+      - web
+    command: --web --docker --logLevel=INFO
+    ports:
+      - ${TRAEFIK_PORT}:80
+      - ${TRAEFIK_SECURE_PORT}:443
+    labels:
+      - 'traefik.frontend.rule=Host:${TRAEFIK_FRONTEND_HOST}'
+      - 'traefik.frontend.auth.basic=${TRAEFIK_FRONTEND_USER}:${TRAEFIK_FRONTEND_PASSWORD}'
+      - 'traefik.port=8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+
+networks:
+  web:
+    external: true
