@@ -9,6 +9,7 @@
 **/.env
 **/.env.local
 **/.env.*.local
+**/acme.json
 
 # COMPILED SOURCES
 *.com
