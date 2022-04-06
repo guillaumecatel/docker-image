@@ -1,35 +1,33 @@
 version: '3'
 
 services:
-
-  ## https://github.com/DoTheEvo/Traefik-v2-examples
   traefik:
     image: 'traefik:v2.6'
-    container_name: ${APP_NAME}
+    container_name: '${APP_NAME}-traefik'
     hostname: 'traefik'
-    restart: always
+    restart: 'always'
     ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
       - './traefik.yml:/traefik.yml:ro'
       - './users_credentials:/users_credentials:ro'
       - './acme.json:/acme.json'
     labels:
-      - "traefik.enable=true"
-      - 'traefik.http.routers.dashboard.rule=Host(`traefik.my-website.local`)'
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls.certresolver=lets-encr"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.redirect-https.entrypoints=web"
-      - "traefik.http.routers.redirect-https.middlewares=redirect-to-https"
-      - "traefik.http.routers.dashboard.middlewares=auth-middleware"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.dashboard.rule=Host(`${TRAEFIK_DASHBOARD_HOST}`)'
+      - 'traefik.http.routers.dashboard.service=api@internal'
+      - 'traefik.http.routers.dashboard.entrypoints=websecure'
+      - 'traefik.http.routers.dashboard.tls.certresolver=lets-encr'
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+      - 'traefik.http.routers.redirect-https.rule=hostregexp(`{host:.+}`)'
+      - 'traefik.http.routers.redirect-https.entrypoints=web'
+      - 'traefik.http.routers.redirect-https.middlewares=redirect-to-https'
+      - 'traefik.http.routers.dashboard.middlewares=auth-middleware'
       - 'traefik.http.middlewares.auth-middleware.basicauth.usersfile=/users_credentials'
 networks:
   default:
     external:
-      name: $TRAEFIK_NETWORK
+      name: '${TRAEFIK_NETWORK}'

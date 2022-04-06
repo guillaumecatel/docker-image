@@ -1,27 +1,26 @@
 log:
-  level: INFO
+  level: 'INFO'
 
 api:
   dashboard: true
 
 entryPoints:
   web:
-    address: ":80"
+    address: ':80'
   websecure:
-    address: ":443"
+    address: ':443'
 
 providers:
   docker:
-    endpoint: "unix:///var/run/docker.sock"
+    endpoint: 'unix:///var/run/docker.sock'
     exposedByDefault: false
   file:
-    filename: "traefik.yml"
+    filename: 'traefik.yml'
 
 certificatesResolvers:
   lets-encr:
     acme:
-      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      storage: acme.json
-      email: my-email@my-website.local
+      storage: 'acme.json'
+      email: 'me@locahost'
       httpChallenge:
-        entryPoint: web
+        entryPoint: 'web'
