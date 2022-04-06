@@ -1,0 +1,26 @@
+log:
+  level: 'INFO'
+
+api:
+  dashboard: true
+
+entryPoints:
+  web:
+    address: ':80'
+  websecure:
+    address: ':443'
+
+providers:
+  docker:
+    endpoint: 'unix:///var/run/docker.sock'
+    exposedByDefault: false
+  file:
+    filename: 'traefik.yml'
+
+certificatesResolvers:
+  lets-encr:
+    acme:
+      storage: 'acme.json'
+      email: 'me@locahost'
+      httpChallenge:
+        entryPoint: 'web'
